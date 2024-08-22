@@ -1,7 +1,8 @@
 # examProject_AASM
 
 Repo structure:
---in the folder "src" there is all the code wrote for the exam, organized by game and algorithm(DQN or Actor Critic). All files have similar structure, they differ in the logic part: such as the rewards management, hyperparameters, network architectures and env wrapper used. To be able to understand the code written for the project it is sufficient to consult the "baseline_code_version", there are all the learning versions used(of course they are not identical to each game, to explore a specific approach used for a game, please follow the following path-rule:
+
+--in the folder "src" there is all the code wrote for the exam, organized by game and algorithm(DQN or Actor Critic). All files have similar structure, they differ in the logic part: such as the rewards management, hyperparameters, network architectures and env wrapper used. To be able to understand the code written for the project it is sufficient to consult the "baseline_code_version", there are all the learning versions used(of course they are not identical to each game.To explore a specific approach used for a game, please follow the following path-rule:
 (ex. coinrun with DQN) 
 src->coinrun_DQN->coinrun->project_3.3.py
 
