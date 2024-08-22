@@ -9,11 +9,17 @@ src->coinrun_DQN->coinrun->project_3.3.py
 -the main games faced were: coinrun colorized, bossfight grayscaled, chaser grayscaled. It is possible to find code of other games but they are not officialy reported beacuse not exploited too much(ex. heist,maze,starpilot,fruitbot)
 
 --the folder "baseline_code_version" contains file that don't differ too much:
+
 project_3.1.py = DQN with replay buffer and TD(0) approach
+
 project_3.2.py = DQN with replay buffer and Monte Carlo approach, with step penalty
+
 project_3.22.py = DQN with replay buffer and Monte Carlo approach, with no step penalty
+
 project_3.222.py = same as 3.1 , duplicate just for self-mind-organization 
+
 project_3.3.py = DQN with replay buffer and Monte Carlo approach, with no step penalty, grayscale and framestack wrappers
+
 project_5.0_actorCritic.py = it is the version fo Actor Critic Algorithm with a TD(0)* approach
 
 -in each game folder is possible to see graphs of the trainings
