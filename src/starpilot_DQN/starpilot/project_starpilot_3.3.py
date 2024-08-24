@@ -16,7 +16,7 @@ import MyMetrics
 
 import gym
 import procgen
-numbers_lvls = 20
+numbers_lvls = 30
 env = gym.wrappers.GrayScaleObservation(gym.make('procgen-starpilot-v0', 
                 #render_mode="human",
                 num_levels=numbers_lvls, start_level=1, 
@@ -112,7 +112,7 @@ model_Q = tf.keras.Sequential([
 
 
 #load weights if necessary
-model_Q.load_weights("./checkpoints_new/project_3.3_CNN_NEWPAPER_Model_starpilot_GRAYSCALE-FRAMESTACKING-gradienttape_500episodes_20lvl_rewSTANDARD_quartoround-secondoforkConepsilon.65_MonteCarlo_epsilon_CLIPPING_newTinyNetwork_0003LR.weights.h5")
+model_Q.load_weights("./checkpoints_new/project_3.3_CNN_NEWPAPER_Model_starpilot_GRAYSCALE-FRAMESTACKING-gradienttape_2000episodes_20lvl_rewSTANDARD_quintoround-terzoforkConepsilon.0_TD(0)_epsilon_CLIPPING_newTinyNetwork_001LR.weights.h5")
 
 
 loss_fn = tf.keras.losses.MeanSquaredError()
@@ -131,17 +131,17 @@ def policy(listOptions,epsilon):
 #Hyperparameters
 alpha= 0.9
 gamma= 0.95
-number_episodes = 500
+number_episodes = 10000
 max_number_steps = 1000
-learning_rate = 0.0001
+learning_rate = 0.001
 
-epsilon = 0.45  #prima era 70
+epsilon = 0  #prima era 70
 discount_epsilon = 0.0003 #prima era 5
-lower_bound_epsilon = 0.45#.40  #prima era 20
+lower_bound_epsilon = 0#.40  #prima era 20
 ###############################
 title_save_weights = ("./checkpoints_new/project_3.3_CNN_NEWPAPER_Model_starpilot_GRAYSCALE-FRAMESTACKING-gradienttape_"
 +str(number_episodes)+"episodes_"
-+str(numbers_lvls)+"lvl_rewSTANDARD_quartoround-terzoforkConepsilon.45_MonteCarlo_epsilon_CLIPPING_newTinyNetwork_0003LR.weights.h5")
++str(numbers_lvls)+"lvl_rewSTANDARD_sestoround-terzoforkConepsilon.0_TD(0)_epsilon_CLIPPING_newTinyNetwork_001LR.weights.h5")
 #print(title_save_weights)
 
 
@@ -186,6 +186,7 @@ for episode in range(number_episodes): #for each episode...
     stacked_images = np.expand_dims(stacked_images, axis=0)
 
     action_value = model_Q.predict(stacked_images)
+    print(action_value)
 
     #obs = np.expand_dims(obs, axis=0)
 
@@ -219,6 +220,7 @@ for episode in range(number_episodes): #for each episode...
         stacked_images_new = np.expand_dims(stacked_images_new, axis=0)
 
         action_value_new = model_Q.predict(stacked_images_new)
+        print(action_value_new)
 
         #obs_new = np.expand_dims(obs_new, axis=0)
 
@@ -247,8 +249,8 @@ for episode in range(number_episodes): #for each episode...
 
         #Store the transition in the replay buffer
         transition = (stacked_images, action_value_new, index_to_update, rew, stacked_images_new, action_value)
-        #replay_buffer.append(transition)
-        temporary_buffer.append(transition)
+        replay_buffer.append(transition)
+        #temporary_buffer.append(transition)
 
         if done:
             obs = env.reset()
@@ -257,10 +259,10 @@ for episode in range(number_episodes): #for each episode...
             print(info['prev_level_complete'])
             #if(info['prev_level_complete']==0):
                 #average_rew-=20
-            for x in temporary_buffer: #for each step of the game give the gained reward(10 if total win, 1 if semi-win,-1 if loose)
+            '''for x in temporary_buffer: #for each step of the game give the gained reward(10 if total win, 1 if semi-win,-1 if loose)
                 obs, action_value_new, index_to_update, rew, obs_new, action_value = x 
                 new_x = obs, action_value_new, index_to_update, (rew+average_rew), obs_new, action_value
-                replay_buffer.append(new_x)
+                replay_buffer.append(new_x)'''
             break
             
         

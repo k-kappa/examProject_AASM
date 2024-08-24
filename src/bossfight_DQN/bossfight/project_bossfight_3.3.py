@@ -18,7 +18,7 @@ import gym
 import procgen
 numbers_lvls = 20
 env = gym.wrappers.GrayScaleObservation(gym.make('procgen-bossfight-v0', 
-                #render_mode="human",
+                render_mode="human",
                 num_levels=numbers_lvls, start_level=1, 
                 distribution_mode='easy', 
                 use_backgrounds=False, 
@@ -120,7 +120,7 @@ model_Q = tf.keras.Sequential([
 
 
 #load weights if necessary
-model_Q.load_weights("./checkpoints_new/project_3.3_CNN_NEWPAPER_Model_bossfight_GRAYSCALE-gradienttape_500episodes_20lvl_rewSTANDARDeduration_ottavoround_norewDuration-0.4epsi_CLIPPING_0003LR.weights.h5")
+model_Q.load_weights("./checkpoints_new/project_3.3_CNN_NEWPAPER_Model_bossfight_GRAYSCALE-gradienttape_5000episodes_20lvl_rewSTANDARDeduration_undicesimoround_norewDuration_0epsilon_CLIPPING_0003LR.weights.h5")
 
 
 loss_fn = tf.keras.losses.MeanSquaredError()
@@ -143,13 +143,13 @@ number_episodes = 500
 max_number_steps = 1000
 learning_rate = 0.001
 
-epsilon = 0.40  #prima era 70
+epsilon = 0  #prima era 70
 discount_epsilon = 0.0003 #prima era 5
-lower_bound_epsilon = 0.4#.40  #prima era 20
+lower_bound_epsilon = 0#.40  #prima era 20
 ###############################
 title_save_weights = ("./checkpoints_new/project_3.3_CNN_NEWPAPER_Model_bossfight_GRAYSCALE-gradienttape_"
 +str(number_episodes)+"episodes_"
-+str(numbers_lvls)+"lvl_rewSTANDARDeduration_nonoround_norewDuration-0.4epsi_CLIPPING_0003LR.weights.h5")
++str(numbers_lvls)+"lvl_rewSTANDARDeduration_dodicesimoround_norewDuration_0epsilon_CLIPPING_0003LR.weights.h5")
 #print(title_save_weights)
 
 
@@ -214,7 +214,7 @@ for episode in range(number_episodes): #for each episode...
             rew=40
 
         if(done and info['prev_level_complete']==0):  ################changed
-            rew= -10
+            rew= -20
         #elif(done and info['prev_level_complete']==1):
         #    rew= average_rew
         #else:
@@ -232,6 +232,7 @@ for episode in range(number_episodes): #for each episode...
         obs_new = np.expand_dims(obs_new, axis=0)
 
         action_value_new = model_Q.predict(obs_new)
+        print(action_value_new)
 
 
 

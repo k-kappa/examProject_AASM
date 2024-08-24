@@ -13,21 +13,21 @@ import MyMetrics'''
 
 import gym
 import procgen
-'''env = gym.make('procgen-bossfight-v0', #env for coinrun
-                #render_mode="human",
+'''env = gym.make('procgen-coinrun-v0', #env for coinrun
+                render_mode="human",
                 num_levels=0, start_level=50, 
                 distribution_mode='hard', 
                 use_backgrounds=True, 
                 rand_seed=7858 )'''
-env = gym.wrappers.GrayScaleObservation(gym.make('procgen-leaper-v0', #wrapper for bossfight and chaser
-                #render_mode="human",
+env = gym.wrappers.GrayScaleObservation(gym.make('procgen-bossfight-v0', #wrapper for starpilot and leaper
+                render_mode="human",
                 num_levels=0, start_level=50, 
                 distribution_mode='easy', 
                 use_backgrounds=False, 
                 rand_seed=7585 ), keep_dim=False)
 
 
-model_Q = tf.keras.models.Sequential([ ###network for bossfight DQN + remember grayscale wrapper
+model_Q = tf.keras.models.Sequential([ ###network for bossfight and leaperDQN + remember grayscale wrapper
     tf.keras.layers.Conv2D(32, (8, 8), strides=4, padding='valid', activation='relu', input_shape=(64,64,1)),
     tf.keras.layers.Conv2D(64, (4, 4), strides=2, padding='valid', activation='relu'),
     tf.keras.layers.Conv2D(64, (3, 3), strides=1, padding='valid', activation='relu'),
@@ -36,7 +36,7 @@ model_Q = tf.keras.models.Sequential([ ###network for bossfight DQN + remember g
     tf.keras.layers.Dense(15, activation='linear')
 ])
 
-'''model_Q = tf.keras.models.Sequential([
+'''model_Q = tf.keras.models.Sequential([  ###network for coinrun DQN
     tf.keras.layers.Conv2D(32, (3, 3), activation='relu', input_shape=(64, 64, 3)),
     tf.keras.layers.MaxPooling2D((2, 2)),
     tf.keras.layers.Conv2D(64, (3, 3), activation='relu'),
@@ -54,6 +54,8 @@ model_Q = tf.keras.models.Sequential([ ###network for bossfight DQN + remember g
     tf.keras.layers.Dropout(0.2),
     tf.keras.layers.Dense(15)
 ])'''
+
+########################################################################################################################àà
 '''
 
 model_Q = tf.keras.models.Sequential([
@@ -90,7 +92,7 @@ model_Q = tf.keras.Sequential([
     tf.keras.layers.Dense(9)
 ])'''
 
-title_save_weights = "./project_3.3_CNN_NEWPAPER_Model_leaper_GRAYSCALE-gradienttape_500episodes_20lvl_rewSTANDARD_settimoround_MonteCarlo_highepsilon_CLIPPING_0001LR.weights.h5"
+title_save_weights = "./project_3.3_CNN_NEWPAPER_Model_bossfight_GRAYSCALE-gradienttape_5000episodes_20lvl_rewSTANDARDeduration_undicesimoround_norewDuration_0epsilon_CLIPPING_0003LR.weights.h5"
 #load weights if necessary
 model_Q.load_weights(title_save_weights) ######path to weights
 loss_fn = tf.keras.losses.MeanSquaredError()
@@ -106,8 +108,8 @@ def policy(listOptions,epsilon):
         return np.argmax(listOptions)
         
 
-#Hyperparameters
-number_episodes = 500
+#Hyperparameters #################################
+number_episodes = 10
 max_number_steps = 1500
 epsilon = 0
 flagFrameStack = False  # set to true if the network uses framestack wrapper, and remember to change the input size of the network to (64,64,3), otherwise for other games it is always (64,64,1)
@@ -156,7 +158,7 @@ for episode in range(number_episodes): #for each episode...
         ######obs = np.squeeze(obs, axis=0)
 
         #choose action following the policy
-        action = policy(action_value[0], 0)
+        action = policy(action_value[0], epsilon)
         print("choosen action: "+str(action))
         obs_t = obs #save previous observation
 
