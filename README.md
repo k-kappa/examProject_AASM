@@ -10,7 +10,7 @@ src->coinrun_DQN->coinrun->project_3.3.py
 -the main games faced were: coinrun colorized, bossfight grayscaled, starpilot grayscaled & framestack, leaper grayscaled. It is possible to find code of other games but they are not officialy reported beacuse not exploited too much(ex. heist,maze,fruitbot)
 
 
---the folder "baseline_code_version" contains file that don't differ too much, to evaluate the code it is sufficient to consult :
+--the folder "baseline_code_version" contains file that don't differ too much, to evaluate the code it is sufficient to consult **project_3.3.py & project_5.0_actorCritic.py**:
 
 project_3.1.py = DQN with replay buffer and TD(0) approach
 
