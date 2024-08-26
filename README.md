@@ -7,25 +7,17 @@ Repo structure:
 src->coinrun_DQN->coinrun->project_3.3.py
 
 
->>the main games faced were: coinrun colorized, bossfight grayscaled, starpilot grayscaled & framestack, leaper grayscaled. It is possible to find code of other games but they are not officialy reported beacuse not exploited too much(ex. heist,maze,fruitbot)
+>>the main games faced were: <ins>**coinrun colorized, bossfight grayscaled, starpilot grayscaled & framestack, leaper grayscaled**</ins>. It is possible to find code of other games but they are not officialy reported beacuse not exploited too much(ex. heist,maze,fruitbot)
 
 
->>the folder "baseline_code_version" contains file that don't differ too much, to evaluate the code it is sufficient to consult **project_3.3.py & project_5.0_actorCritic.py**:\\
-project_3.1.py = DQN with replay buffer and TD(0) approach
-
-project_3.2.py = DQN with replay buffer and Monte Carlo approach, with step penalty
-
-project_3.22.py = DQN with replay buffer and Monte Carlo approach, with no step penalty
-
-project_3.222.py = same as 3.1 , duplicate just for self-mind-organization 
-
-project_3.3.py = DQN with replay buffer and Monte Carlo approach, with no step penalty, grayscale and framestack wrappers
-
-project_4.01_actorCritic.py = it is the version fo Actor Critic Algorithm with a TD(0)* approach
-
-project_5.0_actorCritic.py = same as 4.01, duplicate just for self-mind-organization
-
-
+>>the folder "baseline_code_version" contains file that don't differ too much, <ins>**to evaluate the code it is sufficient to consult project_3.3.py & project_5.0_actorCritic.py**</ins>:<br>
+project_3.1.py = DQN with replay buffer and TD(0) approach<br>
+project_3.2.py = DQN with replay buffer and Monte Carlo approach, with step penalty<br>
+project_3.22.py = DQN with replay buffer and Monte Carlo approach, with no step penalty<br>
+project_3.222.py = same as 3.1 , duplicate just for self-mind-organization<br>
+project_3.3.py = DQN with replay buffer and Monte Carlo approach, with no step penalty, grayscale and framestack wrappers<br>
+project_4.01_actorCritic.py = it is the version fo Actor Critic Algorithm with a TD(0)* approach<br>
+project_5.0_actorCritic.py = same as 4.01, duplicate just for self-mind-organization<br>
 
 >>in each game folder is possible to see graphs of the training
 
