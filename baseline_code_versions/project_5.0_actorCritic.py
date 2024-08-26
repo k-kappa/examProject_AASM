@@ -12,46 +12,30 @@ import math
 import sys
 import os
 # Add the directory containing my_metrics.py to the system path
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../../../utility')))    #select the right path to file utility
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../../utility')))
 import MyMetrics
 
 
 import gym
 import procgen
 numbers_lvls = 20
-env = gym.wrappers.GrayScaleObservation(gym.make('procgen-chaser-v0', 
+env = gym.wrappers.GrayScaleObservation(gym.make('procgen-bossfight-v0', 
                 #render_mode="human",
                 num_levels=numbers_lvls, start_level=1, 
                 distribution_mode='easy', 
                 use_backgrounds=False, 
-                rand_seed=7585 ), keep_dim=False)
+                rand_seed=7585 ), keep_dim=True)
+
+env = gym.wrappers.FrameStack(env, 4)
 
 
 oi = tf.keras.initializers.Orthogonal()
 
-
-
-model_Actor = tf.keras.models.Sequential([
-    tf.keras.layers.Conv2D(32, (8, 8), strides=4, padding='valid', activation='relu', input_shape=(64,64,1)),
-    tf.keras.layers.Conv2D(64, (4, 4), strides=2, padding='valid', activation='relu'),
-    tf.keras.layers.Conv2D(64, (3, 3), strides=1, padding='valid', activation='relu'),
-    tf.keras.layers.Flatten(),
-    tf.keras.layers.Dense(512, activation='relu'),
-    tf.keras.layers.Dense(15, activation='linear')
-])
-
-model_Critic = tf.keras.models.Sequential([
-    tf.keras.layers.Conv2D(32, (8, 8), strides=4, padding='valid', activation='relu', input_shape=(64,64,1)),
-    tf.keras.layers.Conv2D(64, (4, 4), strides=2, padding='valid', activation='relu'),
-    tf.keras.layers.Conv2D(64, (3, 3), strides=1, padding='valid', activation='relu'),
-    tf.keras.layers.Flatten(),
-    tf.keras.layers.Dense(512, activation='relu'),
-    tf.keras.layers.Dense(15, activation='linear')
-])
-
 '''
 model_Actor = tf.keras.models.Sequential([
-    tf.keras.layers.Conv2D(32, (8, 8), strides=4, padding='valid', activation='relu', input_shape=(64,64,3)),
+    #tf.keras.layers.Conv2D(32, (8, 8), strides=4, padding='valid', activation='relu', input_shape=(4,64,64)),
+    #tf.keras.layers.Conv2D(32, (8, 8), strides=4, padding='same', activation='relu', input_shape=(4,64,64)),
+    tf.keras.layers.Conv2D(32, (7, 7), strides=4, padding='valid', activation='relu', input_shape=(4,64,64)),
     tf.keras.layers.Conv2D(64, (4, 4), strides=2, padding='valid', activation='relu'),
     tf.keras.layers.Conv2D(64, (3, 3), strides=1, padding='valid', activation='relu'),
     tf.keras.layers.Flatten(),
@@ -60,7 +44,9 @@ model_Actor = tf.keras.models.Sequential([
 ])
 
 model_Critic = tf.keras.models.Sequential([
-    tf.keras.layers.Conv2D(32, (8, 8), strides=4, padding='valid', activation='relu', input_shape=(64,64,3)),
+    #tf.keras.layers.Conv2D(32, (8, 8), strides=4, padding='valid', activation='relu', input_shape=(4,64,64)),
+    #tf.keras.layers.Conv2D(32, (8, 8), strides=4, padding='same', activation='relu', input_shape=(4,64,64)),
+    tf.keras.layers.Conv2D(32, (7, 7), strides=4, padding='valid', activation='relu', input_shape=(4,64,64)),
     tf.keras.layers.Conv2D(64, (4, 4), strides=2, padding='valid', activation='relu'),
     tf.keras.layers.Conv2D(64, (3, 3), strides=1, padding='valid', activation='relu'),
     tf.keras.layers.Flatten(),
@@ -68,6 +54,24 @@ model_Critic = tf.keras.models.Sequential([
     tf.keras.layers.Dense(1)
 ])
 '''
+model_Actor = tf.keras.models.Sequential([
+    tf.keras.layers.Conv2D(32, (8, 8), strides=4, padding='same', activation='relu', input_shape=(4, 64, 64)),
+    tf.keras.layers.Conv2D(64, (4, 4), strides=2, padding='same', activation='relu'),
+    tf.keras.layers.Conv2D(64, (3, 3), strides=1, padding='same', activation='relu'),
+    tf.keras.layers.Flatten(),
+    tf.keras.layers.Dense(512, activation='relu', kernel_initializer=oi),
+    tf.keras.layers.Dense(15, activation='softmax')
+])
+
+model_Critic = tf.keras.models.Sequential([
+    tf.keras.layers.Conv2D(32, (8, 8), strides=4, padding='same', activation='relu', input_shape=(4, 64, 64)),
+    tf.keras.layers.Conv2D(64, (4, 4), strides=2, padding='same', activation='relu'),
+    tf.keras.layers.Conv2D(64, (3, 3), strides=1, padding='same', activation='relu'),
+    tf.keras.layers.Flatten(),
+    tf.keras.layers.Dense(512, activation='relu', kernel_initializer=oi),
+    tf.keras.layers.Dense(1)
+])
+
 
 '''
 model_Critic = tf.keras.models.Sequential([
@@ -162,10 +166,11 @@ model_Q = tf.keras.Sequential([
 
 
 #load weights if necessary
-#model_Critic.load_weights("./checkpoints_new/project_4.0_CNN_NEW_SMALL_Model_chaser_ACTORCRITIC_300episodes_20lvl_postRicevimento-nosteppenality_primoround_restartepsilon_00001LR_CRITIC.weights.h5")
-#model_Actor.load_weights("./checkpoints_new/project_4.0_CNN_NEW_SMALL_Model_chaser_ACTORCRITIC_300episodes_20lvl_postRicevimento-nosteppenality_primoround_restartepsilon_00001LR_ACTOR.weights.h5")
+#model_Critic.load_weights("./checkpoints_new/project_4.01_CNN_NEW_SMALL_Model_bossfight_ACTORCRITIC_500episodes_20lvl_pureTD(0)(1-1)-nosteppenality_lastAttempt_DYNAMIC_secondoround_00001LR_CRITIC.weights.h5")
+#model_Actor.load_weights("./checkpoints_new/project_4.01_CNN_NEW_SMALL_Model_bossfight_ACTORCRITIC_500episodes_20lvl_pureTD(0)(1-1)-nosteppenality_lastAttempt_DYNAMIC_secondoround_00001LR_ACTOR.weights.h5")
 
 loss_fn = tf.keras.losses.MeanSquaredError()
+#model_Q.compile(optimizer='adam', loss= loss_fn)
 
 
 #definition of our policy 
@@ -181,18 +186,14 @@ def policy(listOptions):
 
 #Hyperparameters
 gamma= 0.95
-number_episodes = 150
-max_number_steps = 3000
-learning_rate_actor = 0.000001
-learning_rate_critic = 0.000001
-
-epsilon = 0.7#70  #prima era 70
-discount_epsilon = 0.0003 #prima era 5
-lower_bound_epsilon = 0.35  #prima era 20
+number_episodes = 300
+max_number_steps = 1500
+learning_rate_actor = 0.00001
+learning_rate_critic = 0.00001
 ###############################
-title_save_weights = ("./checkpoints_new/project_4.0_CNN_NEW_SMALL_Model_chaser_ACTORCRITIC_"
+title_save_weights = ("./checkpoints_new/project_4.01_CNN_NEW_SMALL_Model_bossfight_ACTORCRITIC_"
 +str(number_episodes)+"episodes_"
-+str(numbers_lvls)+"lvl_postRicevimento_letsFinish-nosteppenality_primoround_restartepsilon_00001LR")
++str(numbers_lvls)+"lvl_pureTD(0)(1-1)-nosteppenality_lastAttempt_DYNAMIC_primoroundConEntropy_00001LR")
 #print(title_save_weights)
 
 
@@ -208,7 +209,7 @@ loss_function = tf.keras.losses.MeanSquaredError()
 
 rew = 0
 
-# Initialize replay buffer with a max size of 10000      #not needed here
+# Initialize replay buffer with a max size of 10000
 #replay_buffer = deque(maxlen=10000)
 
 
@@ -230,6 +231,7 @@ for episode in range(number_episodes): #for each episode...
 
 
     m1.startTimer()
+    
 
     obs = np.expand_dims(obs, axis=0)
     #predict action probabilities
@@ -287,34 +289,37 @@ for episode in range(number_episodes): #for each episode...
             # Take action and get new observation
             obs_new, rew, done, info = env.step(action)
             obs_new = np.expand_dims(obs_new, axis=0)
-            #if(not rew == 0):
-            print(rew)
-            #if(rew==0):
-            #    rew=-0.04
+            #print(obs_new.shape)
 
             #rew-=1 #step penality
+            ####if(not done):
+            ####    rew = 0.1  #reward for staying alive
+
+            if(rew>0): #Clip the rewards
+                rew=1
+            elif(rew<0):
+                rew=-1
 
 
-            if(done and info['prev_level_complete']==0): #if defeated => negative reward
+            if(done and info['prev_level_complete']==0): 
                 rew= -1
-            #elif(done and info['prev_level_complete']==1): #if victory ...
-            #    rew= 1
-            print(rew)
+            elif(done and info['prev_level_complete']==1):
+                rew= 1
 
+            
             state_value_new = model_Critic(obs_new/255, training=True)
 
             delta = rew + gamma * state_value_new * (1 - done) - state_value
 
-            #####entropy = -tf.reduce_sum(action_probabilities * tf.math.log(action_probabilities), axis=1)
-
-            alpha = 0.1 #temperature parameter
+            #entropy = -tf.reduce_sum(action_probabilities * tf.math.log(action_probabilities), axis=1)
+            #alpha = 0.03
 
             # Calculate losses
-            #loss_actor = -tf.math.log(action_probabilities[0][action]) * delta
-            loss_actor = -tf.math.log(action_probabilities[0][action]) * delta + alpha #####* entropy
+            loss_actor = -tf.math.log(action_probabilities[0][action]) * delta  #+ alpha #* entropy
             loss_critic = tf.square(delta)
+            #print(entropy)
 
-            m1.addLossActorCritic(loss_actor.numpy()[0][0],loss_critic.numpy()[0][0],episode)   #save data to make graphs
+            m1.addLossActorCritic(loss_actor.numpy()[0][0],loss_critic.numpy()[0][0],episode)
         
 
         average_rew += rew
