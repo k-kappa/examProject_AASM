@@ -109,7 +109,7 @@ class MyMetrics:
     def showAllGraphs(self):
         plt.figure(figsize=(12, 10))
         
-        self.showGraphLoss(False)
+        self.showGraphLoss(True) ##pass True if Actorcritic, False otherwise
         self.showGraphReward()
         self.showGraphDuration()
         self.showGraphEpsilon()

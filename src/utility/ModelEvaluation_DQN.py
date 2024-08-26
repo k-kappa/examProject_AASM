@@ -55,7 +55,7 @@ model_Q = tf.keras.models.Sequential([ ###network for bossfight and leaperDQN + 
     tf.keras.layers.Dense(15)
 ])'''
 
-########################################################################################################################àà
+########################################################################################################################
 '''
 
 model_Q = tf.keras.models.Sequential([
@@ -96,7 +96,7 @@ title_save_weights = "./project_3.3_CNN_NEWPAPER_Model_bossfight_GRAYSCALE-gradi
 #load weights if necessary
 model_Q.load_weights(title_save_weights) ######path to weights
 loss_fn = tf.keras.losses.MeanSquaredError()
-model_Q.compile(optimizer='adam', loss= loss_fn)
+#model_Q.compile(optimizer='adam', loss= loss_fn)
 
 
 #definition of our policy 
