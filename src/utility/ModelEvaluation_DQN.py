@@ -27,7 +27,7 @@ env = gym.wrappers.GrayScaleObservation(gym.make('procgen-bossfight-v0', #wrappe
                 rand_seed=7585 ), keep_dim=False)
 
 
-model_Q = tf.keras.models.Sequential([ ###network for bossfight and leaperDQN + remember grayscale wrapper
+model_Q = tf.keras.models.Sequential([ ###network for bossfight and leaperDQN + remember grayscale wrwrapper --- for starpilot remember both graysacle and framestack
     tf.keras.layers.Conv2D(32, (8, 8), strides=4, padding='valid', activation='relu', input_shape=(64,64,1)),
     tf.keras.layers.Conv2D(64, (4, 4), strides=2, padding='valid', activation='relu'),
     tf.keras.layers.Conv2D(64, (3, 3), strides=1, padding='valid', activation='relu'),
