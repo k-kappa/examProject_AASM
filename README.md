@@ -27,6 +27,7 @@ project_4.01_actorCritic.py = it is the version fo Actor Critic Algorithm with a
 project_5.0_actorCritic.py = same as 4.01, duplicate just for self-mind-organization
 
 
+
 -in each game folder is possible to see graphs of the training
 
 
